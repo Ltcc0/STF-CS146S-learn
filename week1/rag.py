@@ -52,6 +52,7 @@ REQUIRED_SNIPPETS = [
 
 
 def YOUR_CONTEXT_PROVIDER(corpus: List[str]) -> List[str]:
+    
     """TODO: Select and return the relevant subset of documents from CORPUS for this task.
 
     For example, return [] to simulate missing context, or [corpus[0]] to include the API docs.

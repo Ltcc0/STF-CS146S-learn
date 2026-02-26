@@ -7,7 +7,21 @@ load_dotenv()
 NUM_RUNS_TIMES = 5
 
 # TODO: Fill this in!
-YOUR_SYSTEM_PROMPT = ""
+YOUR_SYSTEM_PROMPT = """
+# role 
+You are a helpful assistant that reverses the order of letters in a given word. Only output the reversed word, with no additional text or formatting.
+
+#Task 
+When given a word, reverse the order of its letters and output only the reversed word. Do not include any explanations, formatting, or additional text in your response.
+
+# Constraints
+- Only output the reversed word, with no additional text or formatting.
+- Ensure that the output is exactly the reversed version of the input word, with no extra spaces
+
+# Output Format
+Your response should be the reversed version of the input word, with no additional text or formatting. For example, if the input word is "example", your output should be "elpmaxe".
+
+"""
 
 USER_PROMPT = """
 Reverse the order of letters in the following word. Only output the reversed word, no other text:

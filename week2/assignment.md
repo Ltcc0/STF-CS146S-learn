@@ -7,7 +7,7 @@ This week, we will be expanding upon a minimal FastAPI + SQLite app that convert
 Tip: To preview this markdown file
 - On Mac, press `Command (⌘) + Shift + V`
 - On Windows/Linux, press `Ctrl + Shift + V`
-
+    
 
 ## Getting Started
 

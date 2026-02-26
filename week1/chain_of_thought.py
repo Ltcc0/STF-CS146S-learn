@@ -7,8 +7,10 @@ load_dotenv()
 
 NUM_RUNS_TIMES = 5
 
-# TODO: Fill this in!
-YOUR_SYSTEM_PROMPT = ""
+YOUR_SYSTEM_PROMPT = (
+    "You are a precise math assistant. Solve modular arithmetic correctly. "
+    "End with exactly one final line in this format: Answer: <number>."
+)
 
 
 USER_PROMPT = """
@@ -68,5 +70,7 @@ def test_your_prompt(system_prompt: str) -> bool:
 
 if __name__ == "__main__":
     test_your_prompt(YOUR_SYSTEM_PROMPT)
+
+
 
 
