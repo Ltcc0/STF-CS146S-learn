@@ -11,7 +11,7 @@ load_dotenv()
 
 openai_client = OpenAI(
     base_url="http://localhost:11434/v1",
-    api_key="ollama" # 随便填，但不能为空
+    api_key="ollama" 
 )
 
 SYSTEM_PROMPT = """
@@ -146,8 +146,8 @@ def extract_tool_invocations(text: str) -> List[Tuple[str, Dict[str, Any]]]:
             continue
     return invocations
 
+#Based on the Ollama 
 def execute_llm_call(conversation: List[Dict[str, str]]):
-    # 核心修改：必须与 ollama list 中的 NAME 完全一致
     MODEL_NAME = "llama3.1:8b" 
     
     try:
