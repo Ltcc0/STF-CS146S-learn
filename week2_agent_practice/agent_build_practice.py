@@ -34,6 +34,8 @@ def resolve_abs_path(path_str: str) -> Path:
     """
     file.py -> /Users/home/mihail/modern-software-dev-lectures/file.py
     """
+    if path_str is None or str(path_str).strip() == "":
+        raise ValueError("path cannot be empty")
     path = Path(path_str).expanduser()
     if not path.is_absolute():
         path = (Path.cwd() / path).resolve()
@@ -100,12 +102,31 @@ def edit_file_tool(path: str, old_str: str, new_str: str) -> Dict[str, Any]:
         "path": str(full_path),
         "action": "edited"
     }
+
+def create_file_tool(path: str, content: str = "") -> Dict[str, Any]:
+    """
+    Creates a new file at the specified path with the given content.
+    If the file already exists, it will be overwritten.
+    :param path: The path where the file should be created.
+    :param content: The initial content of the file.
+    :return: A dictionary with the path and status.
+    """
+    full_path = resolve_abs_path(path)
+    # make sure the parent directory exists
+    full_path.parent.mkdir(parents=True, exist_ok=True)
+    full_path.write_text(content, encoding="utf-8")
+    return {
+        "path": str(full_path),
+        "action": "created_file",
+        "content_length": len(content)
+    }    
     
 
 TOOL_REGISTRY = {
     "read_file": read_file_tool,
     "list_files": list_files_tool,
-    "edit_file": edit_file_tool 
+    "edit_file": edit_file_tool,
+    "create_file": create_file_tool
 }
 
 def get_tool_str_representation(tool_name: str) -> str:
@@ -188,22 +209,28 @@ def run_coding_agent_loop():
                 })
                 break
             for name, args in tool_invocations:
-                tool = TOOL_REGISTRY[name]
+                tool = TOOL_REGISTRY.get(name)
                 resp = ""
                 print(name, args)
-                if name == "read_file":
+                if tool is None:
+                    resp = {"error": f"unknown tool: {name}"}
+                elif name == "read_file":
                     resp = tool(args.get("filename", "."))
                 elif name == "list_files":
                     resp = tool(args.get("path", "."))
                 elif name == "edit_file":
-                    resp = tool(args.get("path", "."), 
-                                args.get("old_str", ""), 
+                    resp = tool(args.get("path", "."),
+                                args.get("old_str", ""),
                                 args.get("new_str", ""))
+                elif name == "create_file":
+                    path_arg = args.get("path") or args.get("filename") or args.get("file_path")
+                    resp = tool(path_arg, args.get("content", ""))
+                else:
+                    resp = {"error": f"unsupported tool: {name}"}
                 conversation.append({
                     "role": "user",
                     "content": f"tool_result({json.dumps(resp)})"
                 })
                 
-
 if __name__ == "__main__":
     run_coding_agent_loop()
